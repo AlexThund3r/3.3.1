@@ -1,0 +1,9 @@
+ru\alex\crud\dao\UserDao.class
+ru\alex\crud\dao\UserDaoImpl.class
+ru\alex\crud\AppConfig.class
+ru\alex\crud\controller\UserController.class
+ru\alex\crud\service\UserServiceImpl.class
+ru\alex\crud\model\User.class
+ru\alex\crud\service\UserService.class
+ru\alex\crud\WebAppInitializer.class
+ru\alex\crud\WebConfig.class
