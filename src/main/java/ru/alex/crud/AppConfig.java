@@ -1,9 +1,12 @@
 package ru.alex.crud;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -18,15 +21,42 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "ru.alex.crud")
+@PropertySource("classpath:db.properties")
 public class AppConfig {
+
+    @Value("${jdbc.driverClassName}")
+    private String driverClassName;
+
+    @Value("${jdbc.url}")
+    private String url;
+
+    @Value("${jdbc.username}")
+    private String username;
+
+    @Value("${jdbc.password}")
+    private String password;
+
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hbm2ddlAuto;
+
+    @Value("${hibernate.show_sql}")
+    private String showSql;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfig() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/db_alex");
-        dataSource.setUsername("root");
-        dataSource.setPassword("MYUsnVoElTMqv!");
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
         return dataSource;
     }
 
@@ -40,9 +70,9 @@ public class AppConfig {
         em.setJpaVendorAdapter(vendorAdapter);
 
         Properties props = new Properties();
-        props.setProperty("hibernate.hbm2ddl.auto", "update");
-        props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-        props.setProperty("hibernate.show_sql", "true");
+        props.setProperty("hibernate.hbm2ddl.auto", hbm2ddlAuto);
+        props.setProperty("hibernate.dialect", hibernateDialect);
+        props.setProperty("hibernate.show_sql", showSql);
 
         em.setJpaProperties(props);
         return em;
