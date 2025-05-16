@@ -3,13 +3,11 @@ package ru.alex.crud.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.alex.crud.model.User;
 
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
@@ -21,7 +19,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    @Transactional // нужно явно указать, т.к. save требует записи
     public void saveUser(User user) {
         entityManager.persist(user);
     }
@@ -32,13 +29,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    @Transactional
     public void updateUser(User user) {
         entityManager.merge(user);
     }
 
     @Override
-    @Transactional
     public void deleteUser(Long id) {
         User user = entityManager.find(User.class, id);
         if (user != null) {
